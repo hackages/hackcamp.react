@@ -17,6 +17,9 @@ export class App extends Component {
 
   componentDidMount() {
     // Fetch the movies here from SERVER_URL/movies then update your state accordingly
+    axios
+      .get(`${SERVER_URL}/movies`)
+      .then(({data}) => this.setState({movies: data}))
   }
 
   selectPage = page => {

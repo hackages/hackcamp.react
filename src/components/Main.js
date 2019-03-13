@@ -5,6 +5,7 @@ import {MovieList} from './MovieList'
 import {SideBarFilters} from './SideBarFilters'
 import {FilterMenu} from './FilterMenu'
 import {movie} from '../types/movie'
+import {movieContainsGenre, getGenreId} from '../libs/utils'
 
 export class Main extends React.Component {
   state = {
@@ -13,7 +14,10 @@ export class Main extends React.Component {
     navClosed: true,
     selectedFilter: 'All',
     counter: 0,
+    filteredList: [],
   }
+
+  componentWillReceiveProps(props) {}
 
   selectTab = category => {
     this.setState({
@@ -31,14 +35,34 @@ export class Main extends React.Component {
     })
   }
 
-  search(event) {}
+  search = event => this.setState({searchValue: event.target.value})
 
-  updateCounter(counter) {}
+  updateCounter = counter => this.setState({counter})
+
+  filterMovies = ({searchValue, selectedFilter, movies}) => {
+    const filteredList = movies.filter(
+      movie =>
+        (selectedFilter === 'All' ||
+          movieContainsGenre(movie, getGenreId(selectedFilter))) &&
+        (!searchValue ||
+          movie.title.toLowerCase().includes(searchValue.toLowerCase()))
+    )
+    this.setState({
+      filteredList,
+      counter: filteredList.length,
+    })
+  }
 
   render() {
-    const {filters, navClosed, selectedFilter, searchValue} = this.state
+    const {
+      filters,
+      navClosed,
+      selectedFilter,
+      searchValue,
+      filteredList,
+    } = this.state
 
-    const {addToCart, isInCart, removeFromCart, movies} = this.props
+    const {addToCart, isInCart, removeFromCart} = this.props
 
     return (
       <main className="main-content">
@@ -50,18 +74,21 @@ export class Main extends React.Component {
         />
 
         <MovieList
-          updateCounter={this.updateCounter}
           removeFromCart={removeFromCart}
           addToCart={addToCart}
           isInCart={isInCart}
           selectMovie={this.props.selectMovie}
-          movies={movies}
+          movies={filteredList}
           selectedFilter={selectedFilter}
           searchValue={searchValue}
           navClosed={navClosed}
         />
 
-        <SideBarFilters navClosed={navClosed} toggle={this.toggle} />
+        <SideBarFilters
+          navClosed={navClosed}
+          toggle={this.toggle}
+          search={this.search}
+        />
       </main>
     )
   }
