@@ -1,0 +1,15 @@
+version: '2'
+services:
+  web:
+    image: node:alpine
+    volumes:
+      - ./:/app
+    ports:
+      - "3000:3000"
+    command: "sh -c 'cd /app && npm install && npm start'"
+  backend:
+    image: hwaterke/hackflix-backend
+    ports:
+      - "5000:5000"
+    environment:
+      - UNSECURE=false
