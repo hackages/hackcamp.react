@@ -3,6 +3,7 @@ import {rootReducer} from '../reducers/rootReducer'
 import {logger} from '../middlewares/logger'
 import {freezeState} from '../middlewares/freezeState'
 import thunk from 'redux-thunk'
+import Axios from 'axios'
 
 /**
  * Create a store that has:
@@ -12,4 +13,4 @@ import thunk from 'redux-thunk'
  *  (https://github.com/zalmoxisus/redux-devtools-extension)
  * @type {Store<any>}
  */
-export const store = createStore(rootReducer, undefined)
+export const store = createStore(rootReducer, applyMiddleware(thunk))

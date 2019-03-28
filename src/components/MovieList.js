@@ -7,8 +7,8 @@ import {connect} from 'react-redux'
 import classnames from 'classnames'
 
 class _MovieList extends Component {
-  componentDidUpdate(nextProps) {
-    if (nextProps.filteredList.length !== this.props.filteredList.length) {
+  componentDidUpdate(prevProps) {
+    if (prevProps.filteredList.length !== this.props.filteredList.length) {
       this.props.updateCounter(this.props.filteredList.length)
     }
   }

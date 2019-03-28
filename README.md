@@ -5,7 +5,7 @@
 ### Topics covered
 
 - CRUD with redux
-- Redux forms
+- Forms with Formik
 - Optimistic insert
 
 ### Getting started
